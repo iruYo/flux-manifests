@@ -19,3 +19,15 @@ spec:
       web:
         redirectTo:
           port: websecure
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+        allowExternalNameServices: true
+      kubernetesIngress:
+        enabled: true
+        allowExternalNameServices: true
+        allowEmptyServices: true
+        ingressClass: traefik
+        publishedService:
+          enabled: true
