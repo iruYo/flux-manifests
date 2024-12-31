@@ -5,3 +5,4 @@ resources:
   - namespace.yml
   - helm-repo.yml
   - helm-release.yml
+  - ingress.yml

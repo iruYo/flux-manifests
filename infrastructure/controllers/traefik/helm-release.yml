@@ -18,10 +18,27 @@ spec:
     ingressClass:
       enabled: true
       isDefaultClass: true
+    ingressRoute:
+      dashboard:
+        enabled: true
+    globalArguments:
+      - "--api.dashboard=true"
+      - "--serverstransport.insecureskipverify=true"
     ports:
       web:
         redirectTo:
           port: websecure
+      websecure:
+        tls:
+          enabled: true
+          options: "default"
+        expose:
+          default: true
+        tlsOptions:
+    default:
+      minVersion: VersionTLS12
+      maxVersion: VersionTLS13
+      sniStrict: true
     providers:
       kubernetesCRD:
         enabled: true
