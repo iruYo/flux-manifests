@@ -15,6 +15,9 @@ spec:
       version: 33.2.1
   interval: 1m0s
   values:
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
     ports:
       web:
         redirectTo:
