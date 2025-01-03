@@ -9,12 +9,13 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - http:
+    - host: traefik.home.youriulbri.ch
+      http:
         paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service:
-                name: traefik
-                port:
-                  number: 9000
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: traefik
+              port:
+                number: 9000
