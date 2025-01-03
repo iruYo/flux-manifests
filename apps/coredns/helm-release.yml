@@ -1,0 +1,62 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: coredns
+  namespace: coredns
+spec:
+  chart:
+    spec:
+      chart: coredns
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: coredns-repo
+      version: 1.37.0
+  interval: 1m0s
+  driftDetection:
+    mode: enabled
+  values:
+    isClusterService: false
+    replicaCount: 2
+    serviceType: "LoadBalancer"
+#    service:
+#      loadBalancerIP: "10.0.100.100"
+    zoneFiles:
+      - filename: home.db
+        domain: home.youriulbri.ch
+        contents: |
+          $TTL 2h
+          $ORIGIN home.youriulbri.ch.
+          @       IN SOA  ns.home.youriulbri.ch. youri.ulbrich.web.de ( 2024010101 12h 15m 3w 2h )
+                  IN NS   ns.home.youriulbri.ch.
+          ns      IN A    10.0.100.100
+
+          pi0.k3s IN A    10.0.20.150
+          pi1.k3s IN A    10.0.20.151
+          pi2.k3s IN A    10.0.20.152
+          pi3.k3s IN A    10.0.20.153
+
+    servers:
+    - zones:
+      - zone: .
+      port: 53
+      plugins:
+      - name: errors
+      - name: log
+      - name: cache
+        parameters: 30
+      - name: health
+        configBlock: |-
+          lameduck 5s
+      - name: ready
+      - name: forward
+        parameters: . 1.1.1.1 1.0.0.1
+      - name: reload
+      
+    - zones:
+      - zone: home.youriulbri.ch
+      port: 53
+      plugins:
+        - name: file
+          parameters: /etc/coredns/home.db home.youriulbri.ch
