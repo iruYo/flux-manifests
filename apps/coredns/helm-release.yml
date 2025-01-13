@@ -4,6 +4,8 @@ kind: HelmRelease
 metadata:
   name: coredns
   namespace: coredns
+  annotations:
+    kube-vip.io/loadbalancerIPs: "10.0.100.100"
 spec:
   chart:
     spec:
@@ -20,8 +22,6 @@ spec:
     isClusterService: false
     replicaCount: 2
     serviceType: "LoadBalancer"
-#    service:
-#      loadBalancerIP: "10.0.100.100"
     zoneFiles:
       - filename: home.db
         domain: home.youriulbri.ch
