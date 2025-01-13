@@ -4,6 +4,11 @@ kind: HelmRelease
 metadata:
   name: longhorn-release
   namespace: longhorn-system
+  annotations:
+    kustomize.toolkit.fluxcd.io/depends-on: |
+      - group: apps
+        kind: Deployment
+        name: kube-vip-cloud-provider
 spec:
   chart:
     spec:
