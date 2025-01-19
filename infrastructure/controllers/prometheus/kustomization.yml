@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+  - namespace.yml
+  - helm-repo.yml
+  - helm-release.yml
+configMapGenerator:
+  - name: kube-state-metrics-config
+    files:
+      - kube-state-metrics-config.yml
+    options:
+      labels:
+        app.kubernetes.io/part-of: flux
+        app.kubernetes.io/component: monitoring
+configurations:
+  - kustomize-config.yml
